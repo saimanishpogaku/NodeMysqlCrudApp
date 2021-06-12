@@ -20,7 +20,7 @@ class Employee {
         let response = null;
 
         try {
-            response = await dbConn.query("INSERT INTO employees set ?", newEmp);
+            response = await dbConn.promise().query("INSERT INTO employees set ?", newEmp);
             console.log(response);
             result(null, response);
         } catch (error) {
@@ -32,7 +32,7 @@ class Employee {
     static async findById(id, result) {
         let response = null;
         try {
-            response = await dbConn.query("Select * from employees where id = ? ", id);
+            response = await dbConn.promise().query("Select * from employees where id = ? ", id);
             result(null, response[0]);
         } catch (error) {
             result(error, null);
@@ -40,11 +40,11 @@ class Employee {
         return response;
     }
 
-    async findAll(result) {
+    static async findAll(result) {
         let response = null;
 
         try {
-            let [rows, fields] = await dbConn.query("SELECT * FROM employees");
+            let [rows, fields] = await dbConn.promise().query("SELECT * FROM employees");
             response = rows;
             result(null, response);
         } catch (error) {
@@ -56,7 +56,7 @@ class Employee {
     async update(id, employee, result) {
         let response = null;
         try {
-            response = await dbConn.query("UPDATE employees SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [employee.first_name, employee.last_name, employee.email, employee.phone, employee.organization, employee.designation, employee.salary, id]);
+            response = await dbConn.promise().query("UPDATE employees SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [employee.first_name, employee.last_name, employee.email, employee.phone, employee.organization, employee.designation, employee.salary, id]);
             result(null, response[0]);
         } catch (error) {
             result(error, null);
@@ -67,7 +67,7 @@ class Employee {
     static async delete(id, result) {
         let response = null;
         try {
-            response = await dbConn.query("DELETE FROM employees WHERE id = ?", [id]);
+            response = await dbConn.promise().query("DELETE FROM employees WHERE id = ?", [id]);
             result(null, response[0]);
         } catch (error) {
             result(error, null);
